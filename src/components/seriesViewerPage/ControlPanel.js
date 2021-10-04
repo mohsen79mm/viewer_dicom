@@ -3,6 +3,9 @@ import { Button, Dropdown, Icon, Menu, Modal } from "semantic-ui-react";
 import PropTypes from 'prop-types';
 import PluginsService from "../../services/PluginsService";
 
+
+
+
 const filterOptions = [
     {
         'key': 'sobel',

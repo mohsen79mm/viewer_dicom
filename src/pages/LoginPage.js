@@ -11,20 +11,20 @@ class LoginPage extends Component {
                     </Header>
                     <Form stacked>
                         <Form.Input
-                            label='Электронная почта'
+                            label='Email'
                             icon='user'
                             iconPosition='left'
-                            placeholder='Электронная почта'
+                            placeholder='Email'
                         />
                         <Form.Input
                             type='password'
-                            label='Пароль'
+                            label='Password'
                             icon='lock'
                             iconPosition='left'
-                            placeholder='Пароль'
+                            placeholder='Password'
                         />
-                        <Form.Button primary fluid>Войти</Form.Button>
-                        <b>Забыли пароль? </b><a href={'/api/reset_password'}>Вы можете его восстановить</a>
+                        <Form.Button primary fluid>Login</Form.Button>
+                        <b>Forgot your password? </b><a href={'/api/reset_password'}>You can restore it</a>
                     </Form>
                 </div>
             </div>
