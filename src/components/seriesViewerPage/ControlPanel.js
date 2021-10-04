@@ -152,74 +152,82 @@ class ControlPanel extends Component {
 
         return (
             <Menu inverted style={{ borderRadius: '0px', marginBottom: '0px' }}>
-                <Menu.Item>
-                    <Button size={'small'} icon inverted onClick={this.onHome}>
-                        <Icon name={'home'} />
-                    </Button>
-                </Menu.Item>
-                <Menu.Item>
-                    <Button icon inverted onClick={this.onPrevInstance}>
-                        <Icon name={'arrow left'} />
-                    </Button>
-                </Menu.Item>
-                <Menu.Item>
-                    {/* <Button icon inverted onClick={this.onPlay}>
+                <Menu inverted style={{ margin: 'auto' }}>
+
+                    <Menu.Item   >
+                        <Button size={'small'} icon inverted onClick={this.onHome}>
+                            <Icon name={'home'} />
+                        </Button>
+                    </Menu.Item>
+                    <Menu.Item>
+                        <Button icon inverted onClick={this.onPrevInstance}>
+                            <Icon name={'arrow left'} />
+                        </Button>
+                    </Menu.Item>
+                    <Menu.Item>
+                        {/* <Button icon inverted onClick={this.onPlay}>
                         <Icon name={'play'}/>
                     </Button> */}
-                    <Button icon inverted onClick={this.onNextInstance}>
-                        <Icon name={'arrow right'} />
-                    </Button>
-                </Menu.Item>
+                        <Button icon inverted onClick={this.onNextInstance}>
+                            <Icon name={'arrow right'} />
+                        </Button>
+                    </Menu.Item>
 
 
-                {/* <Menu.Item>
+                    {/* <Menu.Item>
                     <Button icon inverted onClick={this.onStop}>
-                        <Icon name={'stop'}/>
+                    <Icon name={'stop'}/>
                     </Button>
                 </Menu.Item> */}
 
 
-                <Menu.Item>
+                    {/* <Menu.Item>
                     <Dropdown placeholder='Color scheme' fluid search selection options={colorScaleOptions}
                         onChange={this.onSetColorScale} />
-                </Menu.Item>
+                        </Menu.Item>
                 <Menu.Item>
-                    <Dropdown placeholder='Filters' fluid search selection options={filterOptions} onChange={this.onSetColorScale} />
+                <Dropdown placeholder='Filters' fluid search selection options={filterOptions} onChange={this.onSetColorScale} />
                 </Menu.Item>
                 <Menu.Item>
                     <Dropdown placeholder='View Mode' fluid search selection options={viewModeOptions}
                         onChange={this.onSetViewMode} />
-                </Menu.Item>
-                <Menu.Item>
-                    <Button icon inverted>
-                        <Icon name={'sun'} />
-                    </Button>
-                </Menu.Item>
-                <Menu.Item>
-                    <Button icon inverted onClick={this.zoomFunc}>
-                        <Icon name={'zoom'} />
-                    </Button>
-                </Menu.Item>
-                <Menu.Item>
-                    <Button icon inverted onClick={this.onRotateLeft}>
-                        <Icon name={'redo'} />
-                    </Button>
-                </Menu.Item>
-                <Menu.Item>
-                    <Button icon inverted onClick={this.onRotateRight}>
-                        <Icon name={'undo'} />
-                    </Button>
-                </Menu.Item>
-                {/* <Menu.Item position={'right'}>
+                </Menu.Item> */}
+                    <Menu.Item>
+                        <Button icon inverted>
+                            <Icon name={'sun'} />
+                        </Button>
+                    </Menu.Item>
+                    <Menu.Item>
+                        <Button icon inverted onClick={this.zoomFunc}>
+                            <Icon name={'zoom'} />
+                        </Button>
+                    </Menu.Item>
+                    <Menu.Item>
+                        <Button icon inverted onClick={this.onRotateLeft}>
+                            <Icon name={'redo'} />
+                        </Button>
+                    </Menu.Item>
+                    <Menu.Item>
+                        <Button icon inverted onClick={this.onRotateRight}>
+                            <Icon name={'undo'} />
+                        </Button>
+                    </Menu.Item>
+                    <Menu.Item>
+                        <Button icon inverted onClick={this.onRotateRight}>
+                            <Icon name={'undo'} />
+                        </Button>
+                    </Menu.Item>
+                    {/* <Menu.Item position={'right'}>
                     <Dropdown ref={ref => this.pluginSelect} placeholder='Plugin' fluid search selection
                               options={pluginOptions} onChange={this.onApplyPluginCallback}
-                    />
-                </Menu.Item> */}
-                {/* <Menu.Item position={'right'}>
-                    <Button icon inverted onClick={this.onNextInstance}>
-                        <Icon name={'arrow right'}/>
-                    </Button>
-                </Menu.Item> */}
+                              />
+                </Menu.Item> 
+                <Menu.Item position={'right'}>
+                <Button icon inverted onClick={this.onNextInstance}>
+                <Icon name={'arrow right'}/>
+                </Button>
+            </Menu.Item> */}
+                </Menu>
             </Menu>
         );
     }

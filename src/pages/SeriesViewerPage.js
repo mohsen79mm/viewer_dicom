@@ -172,7 +172,7 @@ class SeriesViewerPage extends Component {
                 const stack = {
                     imageIds: list_url_images,
 
-                    currentImageIdIndex: localStorage.getItem('index')
+                    currentImageIdIndex: 0
                 };
                 // const storedClicks = localStorage.getItem('index');
                 // console.log('storedClicks : >>>>>>>>>>>>>>>>>>>>>', storedClicks)
