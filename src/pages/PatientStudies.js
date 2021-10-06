@@ -6,7 +6,7 @@ import {
 import StudiesService from "../services/DicomService";
 import {Link} from "react-router-dom";
 import MenuContainer from "../components/common/MenuContainer";
-import {Translate} from "react-localize-redux";
+// import {Translate} from "react-localize-redux";
 
 const patientMatcherOptions = [
     {key: 'EXACT', text: 'Exact search', value: 'EXACT'},
@@ -42,42 +42,40 @@ class PatientStudiesPage extends Component {
     render() {
         return (
             <MenuContainer activeItem='studies'>
-                <Translate>
-                    {
-                        (translate) => (
+                
                             <div>
                                 <Form>
                                     <Form.Group widths='equal'>
                                         <Form.Input
-                                            label={translate('patient.name')}
+                                            label={'Patient Name'}
                                             action={<Dropdown button basic floating options={patientMatcherOptions}
                                                               defaultValue='EXACT'/>}
                                             icon='search'
                                             iconPosition='left'
-                                            placeholder={translate('patient.name')}
+                                            placeholder={'Patient Name'}
                                         />
                                         <Form.Input
-                                            label={translate('patient.id')}
+                                            label={'Patient ID'}
                                             action={<Dropdown button basic floating options={patientMatcherOptions}
                                                               defaultValue='EXACT'/>}
                                             icon='search'
                                             iconPosition='left'
-                                            placeholder={translate('patient.id')}
+                                            placeholder={'Patient ID'}
                                         />
-                                        <Form.Field control={Select} label={translate('study.modality')}
+                                        <Form.Field control={Select} label={'Modality'}
                                                     options={options}
-                                                    placeholder={translate('study.modality')}/>
+                                                    placeholder={'Modality'}/>
                                     </Form.Group>
                                 </Form>
                                 <Table>
                                     <Table.Header>
                                         <Table.Row>
-                                            <Table.HeaderCell>{translate('patient.name')}</Table.HeaderCell>
-                                            <Table.HeaderCell>{translate('study.id')}</Table.HeaderCell>
-                                            <Table.HeaderCell>{translate('study.date')}</Table.HeaderCell>
-                                            <Table.HeaderCell>{translate('study.description')}</Table.HeaderCell>
-                                            <Table.HeaderCell>{translate('study.modality')}</Table.HeaderCell>
-                                            <Table.HeaderCell>{translate('study.imagesCount')}</Table.HeaderCell>
+                                            <Table.HeaderCell>{'Patient Name'}</Table.HeaderCell>
+                                            <Table.HeaderCell>{'Study ID'}</Table.HeaderCell>
+                                            <Table.HeaderCell>{'Study Date'}</Table.HeaderCell>
+                                            <Table.HeaderCell>{'Study Description'}</Table.HeaderCell>
+                                            <Table.HeaderCell>{'Modality'}</Table.HeaderCell>
+                                            <Table.HeaderCell>{'Images Count'}</Table.HeaderCell>
                                         </Table.Row>
                                     </Table.Header>
                                     <Table.Body>
@@ -86,7 +84,7 @@ class PatientStudiesPage extends Component {
                                                 return (
                                                     <Table.Row>
                                                         <Table.Cell>
-                                                            {study['patient']['patient_name'] || translate('patient.anonymized')}
+                                                            {study['patient']['patient_name'] || 'Anonymized'}
                                                         </Table.Cell>
                                                         <Table.Cell>
                                                             <Link to={`/studies/${study['id']}`}>
@@ -112,9 +110,7 @@ class PatientStudiesPage extends Component {
                                     </Table.Body>
                                 </Table>
                             </div>
-                        )
-                    }
-                </Translate>
+                        
             </MenuContainer>
         )
     }

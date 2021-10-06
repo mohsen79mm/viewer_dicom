@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Translate} from 'react-localize-redux';
+// import {Translate} from 'react-localize-redux';
 import StudiesService from "../services/DicomService";
 import {Button, Dropdown, Select, Table, Form, Menu, Segment, Grid, Header} from "semantic-ui-react";
 import {Link} from "react-router-dom";
@@ -56,9 +56,7 @@ class PatientsPage extends Component {
         console.log(this.state.patients);
         return (
             <MenuContainer activeItem='patients'>
-                <Translate>
-                    {
-                        (translate) => (
+                
                             <Grid columns='equal'>
                                 <Grid.Row>
                                     <Grid.Column>
@@ -66,26 +64,26 @@ class PatientsPage extends Component {
                                             <Form.Group widths='equal'>
                                                 <Form.Input
                                                     id='id_patient_name'
-                                                    label={translate('patient.name')}
+                                                    label={'Patient Name'}
                                                     action={<Dropdown id='id_patient_name_filter' button basic floating
                                                                       options={patientMatcherOptions}
                                                                       defaultValue='exact'/>}
                                                     icon='search'
                                                     name='patient_name'
                                                     iconPosition='left'
-                                                    placeholder={translate('patient.name')}
+                                                    placeholder={'Patient Name'}
                                                     onKeyPress={this.handleFindInputOnChange}
                                                 />
                                                 <Form.Input
                                                     id='id_patient_id'
-                                                    label={translate('patient.id')}
+                                                    label={'Patient ID'}
                                                     action={<Dropdown id='id_patient_id_filter' button basic floating
                                                                       options={patientMatcherOptions}
                                                                       defaultValue='exact'/>}
                                                     icon='search'
                                                     name='patient_id'
                                                     iconPosition='left'
-                                                    placeholder={translate('patient.id')}
+                                                    placeholder={'Patient ID'}
                                                     onKeyPress={this.handleFindInputOnChange}
                                                 />
                                             </Form.Group>
@@ -93,12 +91,12 @@ class PatientsPage extends Component {
                                         <Table>
                                             <Table.Header>
                                                 <Table.Row>
-                                                    <Table.HeaderCell>{translate('patient.id')}</Table.HeaderCell>
-                                                    <Table.HeaderCell>{translate('patient.name')}</Table.HeaderCell>
-                                                    <Table.HeaderCell>{translate('patient.gender')}</Table.HeaderCell>
-                                                    <Table.HeaderCell>{translate('patient.birthdate')}</Table.HeaderCell>
-                                                    <Table.HeaderCell>{translate('patient.age')}</Table.HeaderCell>
-                                                    <Table.HeaderCell>{translate('patient.imagesCount')}</Table.HeaderCell>
+                                                    <Table.HeaderCell>{'Patient ID'}</Table.HeaderCell>
+                                                    <Table.HeaderCell>{'Patient Name'}</Table.HeaderCell>
+                                                    <Table.HeaderCell>{'Patient Gender'}</Table.HeaderCell>
+                                                    <Table.HeaderCell>{'Patient Birthdate'}</Table.HeaderCell>
+                                                    <Table.HeaderCell>{'Patient Age'}</Table.HeaderCell>
+                                                    <Table.HeaderCell>{'Images Count'}</Table.HeaderCell>
                                                     <Table.HeaderCell/>
                                                 </Table.Row>
                                             </Table.Header>
@@ -108,26 +106,26 @@ class PatientsPage extends Component {
                                                         return (
                                                             <Table.Row>
                                                                 <Table.Cell>
-                                                                    {patient['patient_id'] || translate('patient.anonymized')}
+                                                                    {patient['patient_id'] || 'Anonymized'}
                                                                 </Table.Cell>
                                                                 <Table.Cell>
-                                                                    {patient['patient_name'] || translate('patient.anonymized')}
+                                                                    {patient['patient_name'] || 'Anonymized'}
                                                                 </Table.Cell>
                                                                 <Table.Cell>
-                                                                    {patient['patient_sex'] || translate('patient.anonymized')}
+                                                                    {patient['patient_sex'] || 'Anonymized'}
                                                                 </Table.Cell>
                                                                 <Table.Cell>
-                                                                    {patient['patient_birthdate'] || translate('patient.anonymized')}
+                                                                    {patient['patient_birthdate'] || 'Anonymized'}
                                                                 </Table.Cell>
                                                                 <Table.Cell>
-                                                                    {patient['patient_age'] || translate('patient.anonymized')}
+                                                                    {patient['patient_age'] || 'Anonymized'}
                                                                 </Table.Cell>
                                                                 <Table.Cell>
                                                                     {patient['images_count']}
                                                                 </Table.Cell>
                                                                 <Table.Cell>
                                                                     <Button positive as={Link}
-                                                                            to={`/patient/${patient['id']}/studies`}>{translate('open')}</Button>
+                                                                            to={`/patient/${patient['id']}/studies`}>{'Open'}</Button>
                                                                 </Table.Cell>
                                                             </Table.Row>
                                                         );
@@ -138,9 +136,7 @@ class PatientsPage extends Component {
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
-                        )
-                    }
-                </Translate>
+                        
             </MenuContainer>
         );
     }

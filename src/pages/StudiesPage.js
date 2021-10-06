@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Translate} from 'react-localize-redux';
-import {connect} from 'react-redux';
+
 import {
     Button, Checkbox, Container, Dropdown, Form, Icon, Input, Menu, Radio, Segment, Select, Sidebar, Table,
     TextArea, TransitionablePortal as visible
@@ -45,42 +44,40 @@ class StudiesPage extends Component {
         const {activeItem} = this.state;
         return (
             <MenuContainer activeItem='studies'>
-                <Translate>
-                    {
-                        (translate) => (
+                
                             <div>
                                 <Form>
                                     <Form.Group widths='equal'>
                                         <Form.Input
-                                            label={translate('patient.name')}
+                                            label={'Patient Name'}
                                             action={<Dropdown button basic floating options={patientMatcherOptions}
                                                               defaultValue='EXACT'/>}
                                             icon='search'
                                             iconPosition='left'
-                                            placeholder={translate('patient.name')}
+                                            placeholder={'Patient Name'}
                                         />
                                         <Form.Input
-                                            label={translate('study.id')}
+                                            label={'Study ID'}
                                             action={<Dropdown button basic floating options={patientMatcherOptions}
                                                               defaultValue='EXACT'/>}
                                             icon='search'
                                             iconPosition='left'
-                                            placeholder={translate('study.id')}
+                                            placeholder={'Study ID'}
                                         />
-                                        <Form.Field control={Select} label={translate('study.modality')}
+                                        <Form.Field control={Select} label={'Modality'}
                                                     options={options}
-                                                    placeholder={translate('study.modality')}/>
+                                                    placeholder={'Modality'}/>
                                     </Form.Group>
                                 </Form>
                                 <Table>
                                     <Table.Header>
                                         <Table.Row>
-                                            <Table.HeaderCell>{translate('patient.name')}</Table.HeaderCell>
-                                            <Table.HeaderCell>{translate('study.id')}</Table.HeaderCell>
-                                            <Table.HeaderCell>{translate('study.date')}</Table.HeaderCell>
-                                            <Table.HeaderCell>{translate('study.description')}</Table.HeaderCell>
-                                            <Table.HeaderCell>{translate('study.modality')}</Table.HeaderCell>
-                                            <Table.HeaderCell>{translate('study.imagesCount')}</Table.HeaderCell>
+                                            <Table.HeaderCell>{'Patient Name'}</Table.HeaderCell>
+                                            <Table.HeaderCell>{'Study ID'}</Table.HeaderCell>
+                                            <Table.HeaderCell>{'Study Date'}</Table.HeaderCell>
+                                            <Table.HeaderCell>{'Study Description'}</Table.HeaderCell>
+                                            <Table.HeaderCell>{'Modality'}</Table.HeaderCell>
+                                            <Table.HeaderCell>{'Images Count'}</Table.HeaderCell>
                                         </Table.Row>
                                     </Table.Header>
                                     <Table.Body>
@@ -115,9 +112,7 @@ class StudiesPage extends Component {
                                     </Table.Body>
                                 </Table>
                             </div>
-                        )
-                    }
-                </Translate>
+                        
             </MenuContainer>
         )
     }
@@ -127,4 +122,4 @@ const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(StudiesPage);
+export default (StudiesPage);
