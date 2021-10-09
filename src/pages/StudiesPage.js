@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 
 import {
-    Button, Checkbox, Container, Dropdown, Form, Icon, Input, Menu, Radio, Segment, Select, Sidebar, Table,
-    TextArea, TransitionablePortal as visible
+    Dropdown, Form, Select, Table
 } from "semantic-ui-react";
 import StudiesService from "../services/DicomService";
 import {Link} from "react-router-dom";
@@ -41,7 +40,7 @@ class StudiesPage extends Component {
     }
 
     render() {
-        const {activeItem} = this.state;
+        
         return (
             <MenuContainer activeItem='studies'>
                 
@@ -83,8 +82,9 @@ class StudiesPage extends Component {
                                     <Table.Body>
                                         {
                                             this.state.studies.map(study => {
+                                            
                                                 return (
-                                                    <Table.Row>
+                                                    <Table.Row key={study.id}>
                                                         <Table.Cell>
                                                             {study['patient']['patient_name']}
                                                         </Table.Cell>
@@ -118,8 +118,5 @@ class StudiesPage extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({});
-
-const mapDispatchToProps = (dispatch) => ({});
 
 export default (StudiesPage);

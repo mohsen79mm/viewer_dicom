@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Button, Dimmer, Divider, Form, Grid, Header, Segment, Loader} from "semantic-ui-react";
-import axios, {post} from 'axios';
+import {Button, Dimmer, Divider, Grid, Header, Segment, Loader} from "semantic-ui-react";
+import axios from 'axios';
 import MenuContainer from "../components/common/MenuContainer";
 import Dropzone from "react-dropzone";
 

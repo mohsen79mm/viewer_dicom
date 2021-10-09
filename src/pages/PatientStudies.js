@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
-    Button, Checkbox, Container, Dropdown, Form, Icon, Input, Menu, Radio, Segment, Select, Sidebar, Table,
-    TextArea, TransitionablePortal as visible
+     Dropdown, Form, Select, Table,
+    
 } from "semantic-ui-react";
 import StudiesService from "../services/DicomService";
 import {Link} from "react-router-dom";

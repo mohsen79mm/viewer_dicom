@@ -1,4 +1,6 @@
-viewer dicom react
+1 - npm install >> install all libs 
 
-Version (1)
- 
+2 - npm start ... >> start react project
+
+
+3 - remember to change line 16800 stack DAta

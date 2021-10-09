@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
-    Button, Checkbox, Divider, Dropdown, Form, Grid, Header, Input, Message, Radio, Segment, Select, Table,
-    TextArea
+    Button, Dropdown, Form, Grid, Header, Message,  Segment, Select, 
+    
 } from "semantic-ui-react";
 import StudiesService from "../services/DicomService";
 import MenuContainer from "../components/common/MenuContainer";
