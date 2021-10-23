@@ -1,15 +1,14 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 // import React, { useState, useEffect } from "react";
 import {
     Grid
 } from "semantic-ui-react";
 import DicomService from "../services/DicomService";
 import DicomViewer from "../components/common/DicomViewer";
+
 import ControlPanel from "../components/seriesViewerPage/ControlPanel";
-// import { useSelector, useDispatch } from "react-redux";
-import { getimage } from '../redux/actions/image';
-// import middleware from './reduxCall/middleware';
-import { connect } from 'react-redux';
+// import {facebook} from '../services/Dicom'
+import axios from 'axios';
 
 
 class SeriesViewerPage extends Component {
@@ -29,9 +28,19 @@ class SeriesViewerPage extends Component {
             animation: false,
             viewMode: 'one',
             animationId: undefined,
+            // tools
             zoom: false,
-            wwwc:false,
-            pan:false,
+            wwwc: false,
+            pan: false,
+            angle: false,
+            rectangleroi: false,
+            magnify: false,
+            eraser: false,
+            scroll: false,
+            status:true,
+            maxRequest:0,
+
+
 
 
         };
@@ -44,9 +53,54 @@ class SeriesViewerPage extends Component {
             DicomService.findInstancesBySeriesId(seriesId, instances => {
                 this.setState({ instances: instances, isLoaded: true });
             });
-        }
-    }
 
+        }
+
+        // axios({
+        //     method: 'get',
+        //     url: `http://127.0.0.1:8080/api/instances`,
+        //     withCredentials: false,
+            
+        //   }).then(function (response) {
+        //     console.log(response.data);
+        //   });
+        
+
+
+        //here get all images for better performance 
+
+
+    }
+    // status = False -> stopped hammer time :) request nazan
+    // status = True -> Request bezan
+    // componentDidMount(){
+    //     this.timer = setInterval(()=> this.getMovies(), 1000)
+    // }   
+      
+    // async getMovies(){
+    //     if(this.state.status){
+    //         if(this.state.maxRequest < 10){
+                
+    //             axios({
+    //                 method: 'get',
+    //                 url: `http://127.0.0.1:8080/api/instances/1/image`,
+    //                 withCredentials: false,
+    //                 responseType:"blob"
+                    
+    //               }).then(function (response) {
+    //                 return response.data
+    //               }).then((res) => {
+    //                 console.log("response.blob() : ",res)
+    //               })
+
+    //             this.setState({maxRequest:this.state.maxRequest+1})
+    //         }
+            
+
+    //     }
+      
+    // }
+      
 
     play = () => {
         if (!this.state.animationId) {
@@ -61,7 +115,7 @@ class SeriesViewerPage extends Component {
                     nextInstance();
                     state.animationId = requestAnimationFrame(animate);
                 }, 1000 / 4)
-            }).bind(this);
+            })
             state.animation = true;
             state.animationId = requestAnimationFrame(animate);
         }
@@ -122,40 +176,96 @@ class SeriesViewerPage extends Component {
     };
 
 
-    zoomfunc = () => {
-        this.setState({ zoom: true ,wwwc:false,pan:false});
+    scrollfunc = () => {
+        this.setState({ scroll: true, wwwc: false, pan: false, magnify: false, angle: false, rectangleroi: false, eraser: false });
         // console.log('state zoom : ',this.state.zoom)
-        localStorage.setItem('zoom', this.state.zoom);
+        localStorage.setItem('scroll', this.state.scroll);
         localStorage.setItem('wwwc', this.state.wwwc);
         localStorage.setItem('pan', this.state.pan);
+        localStorage.setItem('magnify', this.state.magnify);
+        localStorage.setItem('angle', this.state.angle);
+        localStorage.setItem('rectangleroi', this.state.rectangleroi);
+        localStorage.setItem('eraser', this.state.eraser);
     };
     panfunc = () => {
-        this.setState({ zoom: false ,wwwc:false,pan:true});
+        this.setState({ scroll: false, wwwc: false, pan: true, magnify: false, angle: false, rectangleroi: false, eraser: false });
         // console.log('state zoom : ',this.state.zoom)
-        localStorage.setItem('zoom', this.state.zoom);
+        localStorage.setItem('scroll', this.state.scroll);
         localStorage.setItem('wwwc', this.state.wwwc);
         localStorage.setItem('pan', this.state.pan);
+        localStorage.setItem('magnify', this.state.magnify);
+        localStorage.setItem('angle', this.state.angle);
+        localStorage.setItem('rectangleroi', this.state.rectangleroi);
+        localStorage.setItem('eraser', this.state.eraser);
     };
     wwwcfunc = () => {
-        this.setState({ zoom: false ,wwwc:true,pan:false});
+        this.setState({ scroll: false, wwwc: true, pan: false, magnify: false, angle: false, rectangleroi: false, eraser: false });
         // console.log('state zoom : ',this.state.zoom)
-        localStorage.setItem('zoom', this.state.zoom);
+        localStorage.setItem('scroll', this.state.scroll);
         localStorage.setItem('wwwc', this.state.wwwc);
         localStorage.setItem('pan', this.state.pan);
+        localStorage.setItem('magnify', this.state.magnify);
+        localStorage.setItem('angle', this.state.angle);
+        localStorage.setItem('rectangleroi', this.state.rectangleroi);
+        localStorage.setItem('eraser', this.state.eraser);
+    };
+    anglefunc = () => {
+        this.setState({ scroll: false, wwwc: false, pan: false, magnify: false, angle: true, rectangleroi: false, eraser: false });
+        // console.log('state zoom : ',this.state.zoom)
+        localStorage.setItem('scroll', this.state.scroll);
+        localStorage.setItem('wwwc', this.state.wwwc);
+        localStorage.setItem('pan', this.state.pan);
+        localStorage.setItem('magnify', this.state.magnify);
+        localStorage.setItem('angle', this.state.angle);
+        localStorage.setItem('rectangleroi', this.state.rectangleroi);
+        localStorage.setItem('eraser', this.state.eraser);
+    };
+    rectangleroifunc = () => {
+        this.setState({ scroll: false, wwwc: false, pan: false, magnify: false, angle: false, rectangleroi: true, eraser: false });
+        // console.log('state zoom : ',this.state.zoom)
+        localStorage.setItem('scroll', this.state.scroll);
+        localStorage.setItem('wwwc', this.state.wwwc);
+        localStorage.setItem('pan', this.state.pan);
+        localStorage.setItem('magnify', this.state.magnify);
+        localStorage.setItem('angle', this.state.angle);
+        localStorage.setItem('rectangleroi', this.state.rectangleroi);
+        localStorage.setItem('eraser', this.state.eraser);
+    };
+    magnifyfunc = () => {
+        this.setState({ scroll: false, wwwc: false, pan: false, magnify: true, angle: false, rectangleroi: false, eraser: false });
+        // console.log('state zoom : ',this.state.zoom)
+        localStorage.setItem('scroll', this.state.scroll);
+        localStorage.setItem('wwwc', this.state.wwwc);
+        localStorage.setItem('pan', this.state.pan);
+        localStorage.setItem('magnify', this.state.magnify);
+        localStorage.setItem('angle', this.state.angle);
+        localStorage.setItem('rectangleroi', this.state.rectangleroi);
+        localStorage.setItem('eraser', this.state.eraser);
+    };
+    eraserfunc = () => {
+        this.setState({ scroll: false, wwwc: false, pan: false, magnify: false, angle: false, rectangleroi: false, eraser: true });
+        // console.log('state zoom : ',this.state.zoom)
+        localStorage.setItem('scroll', this.state.scroll);
+        localStorage.setItem('wwwc', this.state.wwwc);
+        localStorage.setItem('pan', this.state.pan);
+        localStorage.setItem('magnify', this.state.magnify);
+        localStorage.setItem('angle', this.state.angle);
+        localStorage.setItem('rectangleroi', this.state.rectangleroi);
+        localStorage.setItem('eraser', this.state.eraser);
     };
 
 
 
     rotateLeft = () => {
-        this.setState({ rotation: 'left',zoom:false });
+        this.setState({ rotation: 'left', zoom: false });
         // this.setState({ zoom: false });
         localStorage.setItem('zoom', this.state.zoom);
-        
+
         // console.log('hi')
     };
-    
+
     rotateRight = () => {
-        this.setState({ rotation: 'right',zoom:false });
+        this.setState({ rotation: 'right', zoom: false });
         // this.setState({ zoom: false });
         localStorage.setItem('zoom', this.state.zoom);
     };
@@ -178,6 +288,7 @@ class SeriesViewerPage extends Component {
 
 
     render() {
+        // console.log('list : ',this.state.list_image)
         const instances = this.state.instances;
 
 
@@ -195,10 +306,30 @@ class SeriesViewerPage extends Component {
                 }
 
                 const stack = {
-                    imageIds: list_url_images,
+                    imageIds: ['http://127.0.0.1:8080/api/instances/1/image'],
 
                     currentImageIdIndex: 0
                 };
+                const stack1 = {
+                    imageIds: ['http://127.0.0.1:8080/api/instances/2/image'],
+
+                    currentImageIdIndex: 0
+                };
+                const stack2 = {
+                    imageIds: ['http://127.0.0.1:8080/api/instances/4/image'],
+
+                    currentImageIdIndex: 0
+                };
+                const stack3 = {
+                    imageIds: ['http://127.0.0.1:8080/api/instances/5/image'],
+
+                    currentImageIdIndex: 0
+                };
+                // localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('stack', JSON.stringify(stack));
+                localStorage.setItem('stack1', JSON.stringify(stack1));
+                localStorage.setItem('stack2', JSON.stringify(stack2));
+                localStorage.setItem('stack3', JSON.stringify(stack3));
                 // const storedClicks = localStorage.getItem('index');
                 // console.log('storedClicks : >>>>>>>>>>>>>>>>>>>>>', storedClicks)
                 const viewerProps = {
@@ -215,16 +346,32 @@ class SeriesViewerPage extends Component {
                     <div style={{
                         background: 'black'
                     }} tabIndex={'0'} onKeyDown={(event) => this.onKeyPress(event)}>
+
                         <ControlPanel onHome={() => {
                             this.props.history.push('/studies')
                         }} onNextInstance={this.nextInstance} onPrevInstance={this.prevInstance}
                             onSetColorScale={this.setColorScale} onRotateLeft={this.rotateLeft}
                             onRotateRight={this.rotateRight} onSetViewMode={this.setViewMode}
-                            onApplyPlugin={this.onApplyPlugin} zoomFunc={this.zoomfunc}
-                            panFunc={this.panfunc} wwwcFunc={this.wwwcfunc}
+                            onApplyPlugin={this.onApplyPlugin} scrollFunc={this.scrollfunc}
+                            panFunc={this.panfunc} wwwcFunc={this.wwwcfunc} angleFunc={this.anglefunc}
+                            rectangleroiFunc={this.rectangleroifunc} magnifyFunc={this.magnifyfunc}
+                            eraserFunc={this.eraserfunc}
+
                         />
 
-                        <DicomViewer stack={{ ...stack }} {...viewerProps} />
+
+                        {/* <DicomViewer stack={{ ...stack }} {...viewerProps} /> */}
+                        <div style={{ display: 'flex' }}>
+                            <div style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack }} {...viewerProps} /> </div>
+                            {/* <div style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack1 }} {...viewerProps} /> </div> */}
+                        </div>
+                        <div style={{ display: 'flex' }}>
+                            {/* <div style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack2 }} {...viewerProps} /> </div> */}
+                            {/* <div style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack3 }} {...viewerProps} /> </div> */}
+                        </div>
+
+
+
                     </div>
 
                 );
@@ -252,8 +399,10 @@ class SeriesViewerPage extends Component {
                         }} onNextInstance={this.nextInstance} onPrevInstance={this.prevInstance}
                             onSetColorScale={this.setColorScale} onRotateLeft={this.rotateLeft}
                             onRotateRight={this.rotateRight} onSetViewMode={this.setViewMode}
-                            onApplyPlugin={this.onApplyPlugin} zoomFunc={this.zoomfunc}
-                            panFunc={this.panfunc} wwwcFunc={this.wwwcfunc}
+                            onApplyPlugin={this.onApplyPlugin} scrollFunc={this.scrollfunc}
+                            panFunc={this.panfunc} wwwcFunc={this.wwwcfunc} angleFunc={this.anglefunc}
+                            rectangleroiFunc={this.rectangleroifunc} magnifyFunc={this.magnifyfunc}
+                            eraserFunc={this.eraserfunc}
                         />
                         <Grid columns={'equal'}>
                             <Grid.Row>
@@ -279,8 +428,10 @@ class SeriesViewerPage extends Component {
                     }} onNextInstance={this.nextInstance} onPrevInstance={this.prevInstance}
                         onSetColorScale={this.setColorScale} onRotateLeft={this.rotateLeft}
                         onRotateRight={this.rotateRight} onSetViewMode={this.setViewMode}
-                        onApplyPlugin={this.onApplyPlugin} zoomFunc={this.zoomfunc} 
-                        panFunc={this.panfunc} wwwcFunc={this.wwwcfunc}
+                        onApplyPlugin={this.onApplyPlugin} scrollFunc={this.scrollfunc}
+                        panFunc={this.panfunc} wwwcFunc={this.wwwcfunc} angleFunc={this.anglefunc}
+                        rectangleroiFunc={this.rectangleroifunc} magnifyFunc={this.magnifyfunc}
+                        eraserFunc={this.eraserfunc}
                     />
                 </div>
             );
@@ -300,264 +451,3 @@ class SeriesViewerPage extends Component {
 
 export default SeriesViewerPage;
 
-
-
-
-
-
-
-// export default function SeriesViewerPage(props) {
-//     const [instances, setinstances] = useState([]);
-//     const [seriesId, setseriesId] = useState(props.match.params.id);
-//     const [instanceTags, setinstanceTags] = useState({});
-//     const [index, setindex] = useState(0);
-//     const [instance, setinstance] = useState({});
-//     const [showTags, setshowTags] = useState(false);
-//     const [playTimerId, setplayTimerId] = useState(null);
-//     const [isLoaded, setisLoaded] = useState(false);
-//     const [rotation, setrotation] = useState(null);
-//     const [colorScale, setcolorScale] = useState('main');
-//     const [animation, setanimation] = useState(false);
-//     const [viewMode, setviewMode] = useState('one');
-//     const [animationId, setanimationId] = useState(undefined);
-//     const [zoom, setzoom] = useState(false);
-
-//     // const [iii, set] = useState();
-//     const [mounted, setMounted] = useState(false)
-//     // const [iii, set] = useState();
-
-//     const list_instances = []
-//     const handleinstances = async () => {
-//         const response = await fetch(
-//             `http://127.0.0.1:8080/api/series/${seriesId}/instances`
-//         )
-//         const data = await response.json()
-//         // console.log('data : ',data)
-//         if (data) {
-//             // for (var i = 0; i < data.length; i++) {
-//             list_instances.push(data)
-//             console.log(data)
-
-
-//             // }
-//             // console.log(list_instances)
-//             // setinstances(list_instances);
-//             // console.log('instances : ',instances)
-//         }
-//         // console.log(instances)
-//     }
-
-//     // Code for componentWillMount here
-//     // This code is called only one time before intial render
-
-//     useEffect(() => {
-//         // console.log(props.match.params.id)
-//         if (!isLoaded) {
-//             handleinstances();
-
-//             // fetch(
-//             //     `http://127.0.0.1:8080/api/series/${seriesId}/instances`
-//             // ).then(function (response) {
-//             //     if (response.status >= 200 && response.status < 300) {
-//             //         return response;
-//             //     }
-//             //     console.log(response.status);
-//             //     const error = new Error(`HTTP Error ${response.statusText}`);
-//             //     error.status = response.statusText;
-//             //     error.response = response;
-//             //     throw error;
-//             // }).then(response => {
-//             //     return response.json();
-//             // }).then(
-//             //     (result)=>{
-//             //         console.log('result : ',result)
-//             //         // const array_result = [result]
-//             //         // const array_result = result
-//             //         setinstances(result.items);
-//             //         console.log('after instances : ',instances)
-//             //     }
-//             // );
-//         }
-
-
-//         // const seriesId = seriesId;
-//         // setMounted(true)
-//         console.log('1')
-
-
-//     }, [])
-
-
-//     const prevInstance = () => {
-//         const currentInstanceId = index;
-//         const instancesCount = (instances || []).length;
-//         if (instancesCount === 0)
-//             return;
-//         if (currentInstanceId === 0) {
-//             setindex(instancesCount - 1);
-//             setrotation(null);
-//             // this.setState({index: instancesCount - 1, rotation: null});
-//         }
-//         else {
-//             setindex(currentInstanceId - 1);
-//             setrotation(null);
-//             // this.setState({index: currentInstanceId - 1, rotation: null});
-//         }
-//     };
-
-//     const nextInstance = () => {
-//         const currentInstanceId = index;
-//         const instancesCount = (instances || []).length;
-//         if (instancesCount === 0)
-//             return;
-//         if (currentInstanceId + 1 === instancesCount) {
-//             setrotation(null);
-//             setindex(0);
-//             // this.setState({index: 0, rotation: null});
-//         }
-
-//         else {
-//             setindex(currentInstanceId + 1);
-//             setrotation(null);
-//             // this.setState({index: currentInstanceId + 1, rotation: null});
-//         }
-//     };
-
-//     // const showTags = () => {
-//     //     const instances = instances;
-//     //     if (instances) {
-//     //         const instanceId = instances[index]['id'];
-//     //         DicomService.findTagsByInstanceId(instanceId, tags => {
-//     //             setinstanceTags(tags);
-//     //             // this.setState({instanceTags: tags});
-
-//     //         });
-//     //     }
-//     // };
-
-
-//     const zoomfunc = () => {
-//         // this.setState({zoom: true});
-//         setzoom(true);
-//         // console.log('state zoom : ',this.state.zoom)
-//     };
-
-
-
-//     const rotateLeft = () => {
-//         // this.setState({rotation: 'left'});
-//         setrotation('left');
-//         // console.log('hi')
-//     };
-
-//     const rotateRight = () => {
-//         setrotation('right');
-//         // this.setState({rotation: 'right'});
-//     };
-
-//     const setColorScale = (e, d) => {
-//         setcolorScale(d.value);
-//         // this.setState({colorScale: d.value})
-//     };
-
-//     const setViewMode = (e, d) => {
-//         setviewMode(d.value);
-//         // this.setState({viewMode: d.value})
-//     }
-
-//     const onApplyPlugin = (pluginId) => {
-//         if (pluginId) {
-//             const instance = instances[index];
-
-//             // const instance = this.state.instances[this.state.index];
-//             // console.log(instance);
-//             props.history.push(`/instances/${instance['id']}/process/${pluginId}`);
-//         }
-//     };
-
-//     const onKeyPress = (event) => {
-//         if (event.key === 'ArrowLeft') {
-//             prevInstance();
-//         }
-//         else if (event.key === 'ArrowRight') {
-//             nextInstance();
-//         }
-//     };
-
-
-//     /////////////////////////////
-
-
-
-
-
-//     if (true) {
-//         // if (me) {
-//         // const index = index;
-//         // middleware(index);
-//         // const viewMode = viewMode;
-//         if (viewMode === 'one') {
-
-//             let list_url_images = []
-//             // let stack;
-//             const images = list_instances;
-//             console.log('images : ', images[0])
-//             // console.log('images.lengh : ', images[0].length)
-//             // console.log('images part 4 : ', images)
-//             images.forEach(myFunction);
-//             function myFunction(item) {
-//                 console.log('item : ',item)
-//               }
-
-
-//             for (let i = 0; i < images.length; i++) {
-//                 // list_url_images.push(instances[i].id)
-//                 list_url_images.push(`http://127.0.0.1:8080/api/instances/${images[i].id}/image`)
-//                 // more statements
-//             }
-//             console.log('list_url_images', list_url_images)
-//             const stack = {
-//                 imageIds: list_url_images,
-
-//                 currentImageIdIndex: index
-//             };
-//             console.log('stack : ', stack)
-
-//             // createstack();
-//             console.log('3')
-
-//             // const images = instances;
-//             const viewerProps = {
-//                 style: {
-//                     height: window.innerHeight
-//                 },
-//                 instance: images[index],
-//                 rotation: rotation,
-//                 colorScale: colorScale,
-//             };
-
-
-
-//             return (
-
-
-//                 <div style={{
-//                     background: 'black'
-//                 }} tabIndex={'0'} onKeyDown={(event) => onKeyPress(event)}>
-//                     <ControlPanel onHome={() => {
-//                         props.history.push('/studies')
-//                     }} onNextInstance={nextInstance} onPrevInstance={prevInstance}
-//                         onSetColorScale={setColorScale} onRotateLeft={rotateLeft}
-//                         onRotateRight={rotateRight} onSetViewMode={setViewMode}
-//                         onApplyPlugin={onApplyPlugin} zoomFunc={zoomfunc}
-//                     />
-
-//                     <DicomViewer stack={{ ...stack }} {...viewerProps} />
-//                 </div>
-
-//             );
-//         }
-
-//     }
-
-// }

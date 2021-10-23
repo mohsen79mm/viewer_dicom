@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 // import {Translate} from 'react-localize-redux';
 import StudiesService from "../services/DicomService";
-import {Button, Dropdown, Select, Table, Form, Menu, Segment, Grid, Header} from "semantic-ui-react";
+import {Button, Dropdown, Table, Form, Grid} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 import MenuContainer from "../components/common/MenuContainer";
 

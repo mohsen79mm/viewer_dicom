@@ -1,7 +1,5 @@
 // import React from "react";
-import React, { Component, createContext, useContext } from "react";
-
-import { render } from "react-dom";
+import React from "react";
 import * as cornerstone from "cornerstone-core";
 import * as cornerstoneMath from "cornerstone-math";
 import * as cornerstoneTools from "cornerstone-tools";
@@ -15,37 +13,30 @@ cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
 cornerstoneTools.external.Hammer = Hammer;
 
-const divStyle = {
-    width: "512px",
-    height: "512px",
-    position: "relative",
-    color: "white"
-};
 
-const bottomLeftStyle = {
-    bottom: "5px",
-    left: "5px",
-    position: "absolute",
-    color: "white"
-};
+// i change line  13681 with 13682 in cornerstoneTools.js
 
-const bottomRightStyle = {
-    bottom: "5px",
-    right: "5px",
-    position: "absolute",
-    color: "white"
-};
+
+
+// const divStyle = {
+//     width: "512px",
+//     height: "512px",
+//     position: "relative",
+//     color: "white"
+// };
+
 
 class DicomViewer extends React.Component {
     static contextType = UserContext
     constructor(props) {
         super(props);
-
+        const stackData = props.stack;
+        // localStorage.getItem('stack')
         this.state = {
-            zoom:localStorage.getItem('zoom'),
-            stack: props.stack,
+            zoom: localStorage.getItem('zoom'),
+            stack: stackData,
             viewport: cornerstone.getDefaultViewport(null, undefined),
-            imageId: props.stack.imageIds[0],
+            imageId: stackData.imageIds[0],
             // index_image: props.stack.currentImageIdIndex,
         };
         // const storedClicks = localStorage.getItem('index');
@@ -63,18 +54,21 @@ class DicomViewer extends React.Component {
             <div>
                 <div
                     className="viewportElement"
-                    style={{ height: '95vh' }}
+                    // style={{ height: '95vh' }}
+                    style={{ height: '43vh' }}
                     ref={input => {
                         this.element = input;
                     }}
                 >
-                    {/* <canvas className="cornerstone-canvas" /> */}
-                    <div style={bottomLeftStyle}>Zoom: {this.state.viewport.scale}</div>
-                    <div style={bottomRightStyle}>
+                </div>
+                <div style={{display:'flex'}}>
+                    <div style={{width:'65%',color:'white'}} >Zoom: {this.state.viewport.scale}</div>
+                    <div style={{width:'35%',color:'white'}}  >
                         WW/WC: {this.state.viewport.voi.windowWidth} /{" "}
                         {this.state.viewport.voi.windowCenter}
                     </div>
-                </div>
+                    
+                </div>    
             </div>
         );
     }
@@ -103,60 +97,79 @@ class DicomViewer extends React.Component {
         });
     }
 
-    updateTools(){
-        const PanTool = cornerstoneTools.PanTool;
-        const ZoomTool = cornerstoneTools.ZoomTool;
-        const WwwcTool = cornerstoneTools.WwwcTool;
+    updateTools() {
+
         
-        
-        
-        let value_zoom  = localStorage.getItem('zoom')
+
+
+
+
+
+
+
+        let value_magnify = localStorage.getItem('magnify')
+        // let value_zoom = localStorage.getItem('zoom')
         let value_wwwc = localStorage.getItem('wwwc')
-        let value_pan  = localStorage.getItem('pan')
-        
-        if(value_zoom == 'true'){
-            // console.log('zoom_state : ',zoom_state)
-            cornerstoneTools.addTool(ZoomTool, {
-                // Optional configuration
-                configuration: {
-                    invert: false,
-                    preventZoomOutsideImage: false,
-                    minScale: .1,
-                    maxScale: 20.0,
-                }
-            });
+        let value_pan = localStorage.getItem('pan')
+        let value_rectangleroi = localStorage.getItem('rectangleroi')
+        let value_angle = localStorage.getItem('angle')
+        let value_eraser = localStorage.getItem('eraser')
+        // let value_scroll = localStorage.getItem('scroll')
 
-            cornerstoneTools.setToolActive('Zoom', { mouseButtonMask: 1 })
-        }else if(value_pan == 'true') {
-            cornerstoneTools.addTool(PanTool)
+
+        if (value_pan === 'true') {
+
             cornerstoneTools.setToolActive('Pan', { mouseButtonMask: 1 })
-        }else if(value_wwwc == 'true'){
 
-            cornerstoneTools.addTool(WwwcTool)
+
+        } else if (value_wwwc === 'true') {
+
             cornerstoneTools.setToolActive('Wwwc', { mouseButtonMask: 1 })
-        } else {
-            console.log('srry !!!!')
+
+        } else if (value_rectangleroi === 'true') {
+
+            cornerstoneTools.setToolActive('RectangleRoi', { mouseButtonMask: 1 })
+
+        } else if (value_angle === 'true') {
+            // const AngleTool = cornerstoneTools.AngleTool;
+            // cornerstoneTools.addTool(AngleTool)
+            // cornerstoneTools.setToolActive('CobbAngle', { mouseButtonMask: 1 })
+            cornerstoneTools.setToolActive('Angle', { mouseButtonMask: 1 })
+
+        } else if (value_magnify === 'true') {
+
+            cornerstoneTools.setToolActive('Magnify', { mouseButtonMask: 1 })
+
+        } else if (value_eraser === 'true') {
+
+            cornerstoneTools.setToolActive('Eraser', { mouseButtonMask: 1 })
+
         }
 
-    
+
+
+
 
 
     }
 
     componentDidMount() {
-        cornerstoneTools.init()
+
+
+
+        cornerstoneTools.init();
         const element = this.element;
         const stack = this.props.stack;
 
         //tools
-        const StackScrollMouseWheelTool = cornerstoneTools.StackScrollMouseWheelTool
-        const PanTool = cornerstoneTools.PanTool;
-        const ZoomTool = cornerstoneTools.ZoomTool;
-        const WwwcTool = cornerstoneTools.WwwcTool;
+        // const StackScrollMouseWheelTool = cornerstoneTools.StackScrollMouseWheelTool
+        // const MagnifyTool = cornerstoneTools.MagnifyTool;
+        const ZoomMouseWheelTool = cornerstoneTools.ZoomMouseWheelTool;
+
 
         // Enable the DOM Element for use with Cornerstone
         cornerstone.enable(element);
-
+        // console.log('element : ',element)
         // Load the first image in the stack
         cornerstone.loadImage(this.state.imageId).then(image => {
             // Display the first image
@@ -174,16 +187,44 @@ class DicomViewer extends React.Component {
         element.addEventListener("cornerstonenewimage", this.onNewImage);
         window.addEventListener("resize", this.onWindowResize);
 
+
         // adding tools
 
+        // console.log('stackdata : ', stackData)
+        // const stack = ;
         //first tool - need scroll mouse
 
-        cornerstoneTools.addTool(StackScrollMouseWheelTool)
-        cornerstoneTools.setToolActive('StackScrollMouseWheel', {})
-        
+        // cornerstoneTools.addTool(StackScrollMouseWheelTool)
+        // cornerstoneTools.setToolActive('StackScrollMouseWheel', {})
+        cornerstoneTools.addTool(ZoomMouseWheelTool)
+        cornerstoneTools.setToolActive('ZoomMouseWheel', { mouseButtonMask: 1 })
+
+        // toooolllllllsssss
+        // const ZoomTool = cornerstoneTools.ZoomTool;
+        const PanTool = cornerstoneTools.PanTool;
+        const WwwcTool = cornerstoneTools.WwwcTool;
+        const MagnifyTool = cornerstoneTools.MagnifyTool;
+        const RectangleRoiTool = cornerstoneTools.RectangleRoiTool;
+        // const CobbAngleTool = cornerstoneTools.CobbAngleTool;
+        const AngleTool = cornerstoneTools.AngleTool;
+        const EraserTool = cornerstoneTools.EraserTool;
+        // const StackScrollTool = cornerstoneTools.StackScrollTool
+
+
+        cornerstoneTools.addTool(PanTool)
+        // cornerstoneTools.addTool(StackScrollTool)
+        cornerstoneTools.addTool(MagnifyTool);
+        cornerstoneTools.addTool(AngleTool)
+        cornerstoneTools.addTool(WwwcTool)
+        cornerstoneTools.addTool(RectangleRoiTool)
+        // cornerstoneTools.addTool(MagnifyTool)
+        cornerstoneTools.addTool(EraserTool)
+
+
     }
 
     componentWillUnmount() {
+        // console.log('willunmount .........')
         const element = this.element;
         element.removeEventListener(
             "cornerstoneimagerendered",
@@ -198,10 +239,25 @@ class DicomViewer extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        
-
         this.updateTools();
-        
+        // const stackData = cornerstoneTools.getToolState(this.element, "stack");
+        // console.log('stackdata : ', stackData)
+        // const stack = ;
+        // const stack = stackData.data[0];
+
+        // console.log('stack : ', stack)
+        // stack.currentImageIdIndex = stack.currentImageIdIndex;
+        // console.log('currentImageIdIndex : ',stack.currentImageIdIndex)
+        // console.log('stack.currentImageIdIndex ',stack.currentImageIdIndex)
+        // console.log('addad ',localStorage.getItem('index'))
+        // console.log('update ',this.state.stack.imageIds)
+        // stack.imageIds = this.state.stack.imageIds;
+        // cornerstoneTools.addToolState(this.element, "stack", stack);
+        // console.log('stack : ', stack)
+        // const imageId = stack.imageIds[localStorage.getItem('index')];
+        // cornerstoneTools.scrollToIndex(this.element, localStorage.getItem('index'));
+
+
     }
 }
 

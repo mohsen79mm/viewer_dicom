@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Form, Header, Segment} from "semantic-ui-react";
+import {Form, Header} from "semantic-ui-react";
 
 class LoginPage extends Component {
     render() {
