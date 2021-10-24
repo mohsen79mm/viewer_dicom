@@ -31,7 +31,7 @@ ReactDOM.render(
                 <Route path='/studies/:id' component={StudySeriesPage}/>
                 <Route path='/plugins' component={PluginsPage}/>
                 <Route path='/dicom_nodes' component={DicomNodesPage}/>
-                <Route path='/series/:id' component={SeriesViewerPage}/>
+                <Route path='/series' component={SeriesViewerPage}/>
                 <Route path='/remote/:serverId/series/:id' component={SeriesViewerPage}/>
                 <Route path='/dicom/upload' component={UploadDicomPage}/>
                 <Route path='/login' component={LoginPage}/>

@@ -41,7 +41,7 @@ class PatientsPage extends Component {
             const patientId = document.getElementById('id_patient_id').value;
             const patientNameFilter = filterTextToValue[document.getElementById('id_patient_name_filter').innerText.trim()];
             const patientIdFilter = filterTextToValue[document.getElementById('id_patient_id_filter').innerText.trim()];
-            console.log(patientNameFilter);
+            // console.log(patientNameFilter);
             StudiesService.findPatients(patients => {
                 console.log(this);
                 this.setState({patients: patients});
@@ -53,7 +53,7 @@ class PatientsPage extends Component {
     }
 
     render() {
-        console.log(this.state.patients);
+        // console.log(this.state.patients);
         return (
             <MenuContainer activeItem='patients'>
                 

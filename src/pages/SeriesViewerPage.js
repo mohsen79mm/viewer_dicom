@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 // import React, { useState, useEffect } from "react";
-import {
-    Grid
-} from "semantic-ui-react";
+// import {
+//     Grid
+// } from "semantic-ui-react";
 import DicomService from "../services/DicomService";
 import DicomViewer from "../components/common/DicomViewer";
+import axios from 'axios';
 
 import ControlPanel from "../components/seriesViewerPage/ControlPanel";
 // import {facebook} from '../services/Dicom'
-import axios from 'axios';
+// import axios from 'axios';
 
 
 class SeriesViewerPage extends Component {
@@ -16,7 +17,7 @@ class SeriesViewerPage extends Component {
         super(props);
         this.state = {
             instances: [],
-            seriesId: props.match.params.id,
+            // seriesId: props.match.params.id,
             instanceTags: {},
             index: 0,
             instance: {},
@@ -37,8 +38,9 @@ class SeriesViewerPage extends Component {
             magnify: false,
             eraser: false,
             scroll: false,
-            status:true,
-            maxRequest:0,
+            status: true,
+            maxRequest: 0,
+            images: JSON.parse(localStorage.getItem('images')),
 
 
 
@@ -47,46 +49,46 @@ class SeriesViewerPage extends Component {
         this.setState = this.setState.bind(this);
     }
 
-    componentWillMount() {
-        const seriesId = this.state.seriesId;
-        if (!this.state.isLoaded) {
-            DicomService.findInstancesBySeriesId(seriesId, instances => {
-                this.setState({ instances: instances, isLoaded: true });
-            });
+    // componentWillMount() {
+    //     const seriesId = this.state.seriesId;
+    //     if (!this.state.isLoaded) {
+    //         DicomService.findInstancesBySeriesId(seriesId, instances => {
+    //             this.setState({ instances: instances, isLoaded: true });
+    //         });
 
-        }
+    //     }
+    // }
 
         // axios({
         //     method: 'get',
         //     url: `http://127.0.0.1:8080/api/instances`,
         //     withCredentials: false,
-            
+
         //   }).then(function (response) {
         //     console.log(response.data);
         //   });
-        
+
 
 
         //here get all images for better performance 
 
 
-    }
     // status = False -> stopped hammer time :) request nazan
     // status = True -> Request bezan
     // componentDidMount(){
     //     this.timer = setInterval(()=> this.getMovies(), 1000)
     // }   
-      
+
     // async getMovies(){
     //     if(this.state.status){
     //         if(this.state.maxRequest < 10){
-                
+
     //             axios({
     //                 method: 'get',
     //                 url: `http://127.0.0.1:8080/api/instances/1/image`,
     //                 withCredentials: false,
     //                 responseType:"blob"
-                    
+
     //               }).then(function (response) {
     //                 return response.data
     //               }).then((res) => {
@@ -95,12 +97,12 @@ class SeriesViewerPage extends Component {
 
     //             this.setState({maxRequest:this.state.maxRequest+1})
     //         }
-            
+
 
     //     }
-      
+
     // }
-      
+
 
     play = () => {
         if (!this.state.animationId) {
@@ -243,6 +245,7 @@ class SeriesViewerPage extends Component {
         localStorage.setItem('eraser', this.state.eraser);
     };
     eraserfunc = () => {
+        // console.log('clicked eraser jusus')
         this.setState({ scroll: false, wwwc: false, pan: false, magnify: false, angle: false, rectangleroi: false, eraser: true });
         // console.log('state zoom : ',this.state.zoom)
         localStorage.setItem('scroll', this.state.scroll);
@@ -285,61 +288,146 @@ class SeriesViewerPage extends Component {
             this.props.history.push(`/instances/${instance['id']}/process/${pluginId}`);
         }
     };
+    onMouse = (number,list_url_images) => {
+        const stack = {
+            imageIds: list_url_images,
+
+            currentImageIdIndex: number
+        };
+        localStorage.setItem('stack', JSON.stringify(stack));
+    };
 
 
     render() {
-        // console.log('list : ',this.state.list_image)
-        const instances = this.state.instances;
 
+        if (this.state.images && this.state.images.length > 0) {
 
-        if (instances && instances.length > 0) {
-            // if (me) {
-            const index = this.state.index;
-            // middleware(index);
             const viewMode = this.state.viewMode;
             if (viewMode === 'one') {
                 var list_url_images = []
-                for (let i = 0; i < instances.length; i++) {
-                    // list_url_images.push(instances[i].id)
-                    list_url_images.push(`http://127.0.0.1:8080/api/instances/${instances[i].id}/image`)
-                    // more statements
-                }
+                for (let i = 0; i < this.state.images.length; i++) {
 
+                    list_url_images.push(`http://127.0.0.1:8000${this.state.images[i].path}`)
+                    // axios.get(`http://127.0.0.1:8000${this.state.images[i].path}`, { responseType: 'arraybuffer' })
+                    //     .then(response => {
+                    //         let blob = new Blob(
+                    //             [response.data],
+                    //             { type: response.headers['content-type'] }
+                    //         )
+                    //         let image = URL.createObjectURL(blob)
+                    //         list_url_images.push(image)
+                    //         // return image
+                    //     })
+
+                }
+                // console.log('list_url_images : ',list_url_images)
                 const stack = {
-                    imageIds: ['http://127.0.0.1:8080/api/instances/1/image'],
+                    imageIds: list_url_images,
 
                     currentImageIdIndex: 0
                 };
                 const stack1 = {
-                    imageIds: ['http://127.0.0.1:8080/api/instances/2/image'],
+                    imageIds: [list_url_images[0]],
 
                     currentImageIdIndex: 0
                 };
                 const stack2 = {
-                    imageIds: ['http://127.0.0.1:8080/api/instances/4/image'],
+                    imageIds: [list_url_images[1]],
 
                     currentImageIdIndex: 0
                 };
                 const stack3 = {
-                    imageIds: ['http://127.0.0.1:8080/api/instances/5/image'],
+                    imageIds: [list_url_images[2]],
+
+                    currentImageIdIndex: 0
+                };
+                const stack4 = {
+                    imageIds: [list_url_images[3]],
 
                     currentImageIdIndex: 0
                 };
                 // localStorage.setItem('user', JSON.stringify(user));
-                localStorage.setItem('stack', JSON.stringify(stack));
-                localStorage.setItem('stack1', JSON.stringify(stack1));
-                localStorage.setItem('stack2', JSON.stringify(stack2));
-                localStorage.setItem('stack3', JSON.stringify(stack3));
+                // localStorage.setItem('stack1', JSON.stringify(stack1));
+                // localStorage.setItem('stack2', JSON.stringify(stack2));
+                // localStorage.setItem('stack3', JSON.stringify(stack3));
                 // const storedClicks = localStorage.getItem('index');
                 // console.log('storedClicks : >>>>>>>>>>>>>>>>>>>>>', storedClicks)
-                const viewerProps = {
-                    style: {
-                        height: window.innerHeight
-                    },
-                    instance: instances[index],
-                    rotation: this.state.rotation,
-                    colorScale: this.state.colorScale,
-                };
+
+                this.dicom = null
+                if (this.state.images.length === 1) {
+                    // localStorage.setItem('stack', JSON.stringify(stack1));
+
+                    const viewerProps = {
+                        h: '94vh',
+                        style: {
+                            height: window.innerHeight
+                        },
+
+
+                    };
+                    this.dicom = <DicomViewer stack={{ ...stack }} port={{ ...viewerProps }} />
+                }
+                else if (this.state.images.length === 2) {
+                    const viewerProps = {
+                        h: '94vh',
+                        style: {
+                            height: window.innerHeight
+                        },
+
+
+                    };
+                    this.dicom =
+                        <div style={{ display: 'flex' }}>
+                            <div onMouseEnter={ () => {this.onMouse(0,list_url_images)}} style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack1 }} port={{ ...viewerProps }} /> </div>
+                            <div onMouseEnter={ () => {this.onMouse(1,list_url_images)}} style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack2 }} port={{ ...viewerProps }} /> </div>
+                        </div>
+                }
+                else if (this.state.images.length === 3) {
+                    const viewerProps = {
+                        h: '94vh',
+                        style: {
+                            height: window.innerHeight
+                        },
+
+
+                    };
+                    this.dicom =
+                        <div style={{ display: 'flex' }}>
+                            <div onMouseEnter={ () => {this.onMouse(0,list_url_images)}} style={{ margin: '3px', width: '33%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack1 }} port={{ ...viewerProps }} /> </div>
+                            <div onMouseEnter={ () => {this.onMouse(1,list_url_images)}} style={{ margin: '3px', width: '33%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack2 }} port={{ ...viewerProps }} /> </div>
+                            <div onMouseEnter={ () => {this.onMouse(2,list_url_images)}} style={{ margin: '3px', width: '33%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack3 }} port={{ ...viewerProps }} /> </div>
+                        </div>
+
+                }
+                else if (this.state.images.length === 4) {
+                    const viewerProps = {
+                        h: '43vh',
+                        style: {
+                            height: window.innerHeight
+                        },
+
+                    };
+
+                    this.dicom = <div>
+
+                        <div style={{ display: 'flex' }}>
+                            <div onMouseEnter={ () => {this.onMouse(0,list_url_images)}} style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack1 }} port={{ ...viewerProps }} /> </div>
+                            <div onMouseEnter={ () => {this.onMouse(1,list_url_images)}} style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack2 }} port={{ ...viewerProps }} /> </div>
+                        </div>
+
+                        <div style={{ display: 'flex' }}>
+                            <div onMouseEnter={ () => {this.onMouse(2,list_url_images)}} style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack3 }} port={{ ...viewerProps }} /> </div>
+                            <div onMouseEnter={ () => {this.onMouse(3,list_url_images)}} style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack4 }} port={{ ...viewerProps }} /> </div>
+                        </div>
+
+                    </div>
+                }
+                else {
+                    console.log('heeyyyy :((')
+                }
+
+
+
                 return (
 
 
@@ -359,16 +447,7 @@ class SeriesViewerPage extends Component {
 
                         />
 
-
-                        {/* <DicomViewer stack={{ ...stack }} {...viewerProps} /> */}
-                        <div style={{ display: 'flex' }}>
-                            <div style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack }} {...viewerProps} /> </div>
-                            {/* <div style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack1 }} {...viewerProps} /> </div> */}
-                        </div>
-                        <div style={{ display: 'flex' }}>
-                            {/* <div style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack2 }} {...viewerProps} /> </div> */}
-                            {/* <div style={{ margin: '3px', width: '50%', border: ' 3px solid #20a5d6', }}>  <DicomViewer stack={{ ...stack3 }} {...viewerProps} /> </div> */}
-                        </div>
+                        {this.dicom}
 
 
 
@@ -376,47 +455,7 @@ class SeriesViewerPage extends Component {
 
                 );
             }
-            else if (viewMode === 'two') {
-                // console.log('viewmode two')
-                const viewerProps = {
-                    style: {
-                        height: window.innerHeight
-                    },
-                    rotation: this.state.rotation,
-                    colorScale: this.state.colorScale,
-                };
-                const instance1 = instances[index];
-                const instance2 = instances[(index + 1) % instances.length];
-                // console.log('ins 1',instance1)
-                // console.log('ins 2',instance2)
 
-                return (
-                    <div style={{
-                        background: 'black'
-                    }} tabIndex={'0'} onKeyDown={(event) => this.onKeyPress(event)}>
-                        <ControlPanel onHome={() => {
-                            this.props.history.push('/studies')
-                        }} onNextInstance={this.nextInstance} onPrevInstance={this.prevInstance}
-                            onSetColorScale={this.setColorScale} onRotateLeft={this.rotateLeft}
-                            onRotateRight={this.rotateRight} onSetViewMode={this.setViewMode}
-                            onApplyPlugin={this.onApplyPlugin} scrollFunc={this.scrollfunc}
-                            panFunc={this.panfunc} wwwcFunc={this.wwwcfunc} angleFunc={this.anglefunc}
-                            rectangleroiFunc={this.rectangleroifunc} magnifyFunc={this.magnifyfunc}
-                            eraserFunc={this.eraserfunc}
-                        />
-                        <Grid columns={'equal'}>
-                            <Grid.Row>
-                                <Grid.Column>
-                                    <DicomViewer instance={instance1} {...viewerProps} />
-                                </Grid.Column>
-                                <Grid.Column>
-                                    <DicomViewer instance={instance2} {...viewerProps} />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </div>
-                );
-            }
         }
         else {
             return (

@@ -31,6 +31,7 @@ class DicomViewer extends React.Component {
     constructor(props) {
         super(props);
         const stackData = props.stack;
+        
         // localStorage.getItem('stack')
         this.state = {
             zoom: localStorage.getItem('zoom'),
@@ -48,6 +49,8 @@ class DicomViewer extends React.Component {
     }
 
     render() {
+        this.port = this.props.port.h
+        // console.log(this.port)
         // const storedClicks = localStorage.getItem('index');
         // console.log('storedClicks : >>>>>>>>>>>>>>>>>>>>>', storedClicks)
         return (
@@ -55,7 +58,7 @@ class DicomViewer extends React.Component {
                 <div
                     className="viewportElement"
                     // style={{ height: '95vh' }}
-                    style={{ height: '43vh' }}
+                    style={{ height: this.port }}
                     ref={input => {
                         this.element = input;
                     }}
